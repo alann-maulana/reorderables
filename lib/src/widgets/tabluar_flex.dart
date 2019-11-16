@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
-import '../rendering/tabluar_flex.dart';
+import '../rendering/tabular_flex.dart';
 
 class TabluarFlex extends Flex {
   TabluarFlex({
@@ -33,8 +33,8 @@ class TabluarFlex extends Flex {
   final Decoration decoration;
 
   @override
-  RenderTabluarFlex createRenderObject(BuildContext context) {
-    return RenderTabluarFlex(
+  RenderTabularFlex createRenderObject(BuildContext context) {
+    return RenderTabularFlex(
       direction: direction,
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: mainAxisSize,
@@ -49,7 +49,7 @@ class TabluarFlex extends Flex {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderTabluarFlex renderObject) {
+      BuildContext context, RenderTabularFlex renderObject) {
     renderObject
       ..direction = direction
       ..mainAxisAlignment = mainAxisAlignment

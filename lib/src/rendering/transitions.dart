@@ -1,6 +1,6 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 
 class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
   RenderSizeTransitionWithIntrinsicSize({
@@ -13,12 +13,14 @@ class RenderSizeTransitionWithIntrinsicSize extends RenderProxyBox {
         super(child);
 
   Axis axis;
+
 //  Axis get axis => _axis;
 //  set axis(Axis value) {
 //    _axis = value;
 //  }
 
   Animation<double> sizeFactor;
+
 //  Animation<double> get sizeFactor => _sizeFactor;
 //  set sizeFactor(Animation<double> value) {
 //    _sizeFactor = value;

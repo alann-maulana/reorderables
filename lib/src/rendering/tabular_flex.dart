@@ -1,8 +1,8 @@
-import 'dart:math' as math;
 import 'dart:collection';
+import 'dart:math' as math;
 
-import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 
 bool _startIsTopLeft(Axis direction, TextDirection textDirection,
     VerticalDirection verticalDirection) {
@@ -31,12 +31,12 @@ bool _startIsTopLeft(Axis direction, TextDirection textDirection,
 
 typedef _ChildSizingFunction = double Function(RenderBox child, double extent);
 
-class RenderTabluarFlex extends RenderFlex {
+class RenderTabularFlex extends RenderFlex {
   /// Creates a flex render object.
   ///
   /// By default, the flex layout is horizontal and children are aligned to the
   /// start of the main axis and the center of the cross axis.
-  RenderTabluarFlex({
+  RenderTabularFlex({
     List<RenderBox> children,
     Axis direction = Axis.horizontal,
     MainAxisSize mainAxisSize = MainAxisSize.max,
@@ -227,9 +227,9 @@ class RenderTabluarFlex extends RenderFlex {
               break;
           }
 
-          RenderTabluarFlex tabluarFlexChild =
+          RenderTabularFlex tabluarFlexChild =
               _findTabluarFlexDescendant(child);
-          if (tabluarFlexChild is RenderTabluarFlex) {
+          if (tabluarFlexChild is RenderTabularFlex) {
 //            RenderTabluarFlex _child = child as RenderTabluarFlex;
             List<RenderBox> grandchildren =
                 tabluarFlexChild.getChildrenAsList();
@@ -260,9 +260,9 @@ class RenderTabluarFlex extends RenderFlex {
         final int flex = _getFlex(child);
         if (flex > 0) {
           double mainSize = spacePerFlex * flex;
-          RenderTabluarFlex tabluarFlexChild =
+          RenderTabularFlex tabluarFlexChild =
               _findTabluarFlexDescendant(child);
-          if (tabluarFlexChild is RenderTabluarFlex) {
+          if (tabluarFlexChild is RenderTabularFlex) {
             List<RenderBox> grandchildren =
                 tabluarFlexChild.getChildrenAsList();
             for (int i = 0; i < grandchildren.length; i++) {
@@ -356,29 +356,29 @@ class RenderTabluarFlex extends RenderFlex {
     return null;
   }
 
-  RenderTabluarFlex _findTabluarFlexDescendant(RenderBox child) {
+  RenderTabularFlex _findTabluarFlexDescendant(RenderBox child) {
     RenderObject curDescendant = child;
     ListQueue<RenderObject> childrenQueue = ListQueue<RenderObject>();
-    while (curDescendant != null && curDescendant is! RenderTabluarFlex) {
+    while (curDescendant != null && curDescendant is! RenderTabularFlex) {
 //      RenderObject firstChildRenderer;
       curDescendant.visitChildren((RenderObject renderObject) {
 //        firstChildRenderer ??= renderObject;
-        if (curDescendant is! RenderTabluarFlex) {
-          if (renderObject is RenderTabluarFlex) {
+        if (curDescendant is! RenderTabularFlex) {
+          if (renderObject is RenderTabularFlex) {
             curDescendant = renderObject;
           } else {
             childrenQueue.addLast(renderObject);
           }
         }
       });
-      if (curDescendant is! RenderTabluarFlex) {
+      if (curDescendant is! RenderTabularFlex) {
         curDescendant = childrenQueue.isNotEmpty
             ? childrenQueue.removeFirst()
             : null; //firstChildRenderer;
       }
     }
 
-    RenderTabluarFlex tabluarFlexDescendant = curDescendant;
+    RenderTabularFlex tabluarFlexDescendant = curDescendant;
     return tabluarFlexDescendant;
   }
 
@@ -393,20 +393,20 @@ class RenderTabluarFlex extends RenderFlex {
         ? constraints.maxWidth
         : constraints.maxHeight;
     final bool canFlex = maxMainSize < double.infinity;
-//    debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(369) $this.performLayout');
+//    debugPrint('${DateTime.now().toString().substring(5, 22)} tabular_flex.dart(369) $this.performLayout');
     Map<int, double> maxGrandchildrenCrossSize = {};
 
-    Map<RenderBox, RenderTabluarFlex> tabluarFlexDescendants = {};
+    Map<RenderBox, RenderTabularFlex> tabluarFlexDescendants = {};
 
     void _layoutChild(RenderBox child, BoxConstraints constraints) {
-      RenderTabluarFlex tabluarFlexChild = _findTabluarFlexDescendant(child);
+      RenderTabularFlex tabluarFlexChild = _findTabluarFlexDescendant(child);
 //      debugPrint('this:$this _layoutChild: child:$child tabluarFlexChild:$tabluarFlexChild');
       if (tabluarFlexChild != null) {
         //when this is laying out its child (and descendants), this function will be called. So that we can get the grandchild's size
         bool callbackCalled = false;
         void _childLayoutCallback(BoxConstraints constraints) {
           List<RenderBox> grandchildren = tabluarFlexChild.getChildrenAsList();
-//          debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(381) $this._childLayoutCallback: grandchildren.length:${grandchildren.length}');
+//          debugPrint('${DateTime.now().toString().substring(5, 22)} tabular_flex.dart(381) $this._childLayoutCallback: grandchildren.length:${grandchildren.length}');
           for (int i = 0; i < grandchildren.length; i++) {
             double grandchildCrossSize = _getCrossSize(grandchildren[i]);
             maxGrandchildrenCrossSize[i] = math.max(
@@ -561,7 +561,7 @@ class RenderTabluarFlex extends RenderFlex {
       } else {
         BoxConstraints innerConstraints = _innerConstraints(childIndex);
 
-//        debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(515) $this.performLayout: innerConstraints:$innerConstraints');
+//        debugPrint('${DateTime.now().toString().substring(5, 22)} tabular_flex.dart(515) $this.performLayout: innerConstraints:$innerConstraints');
 //        child.layout(innerConstraints, parentUsesSize: true);
         _layoutChild(child, innerConstraints);
         childrenConstraints[child] = innerConstraints; //save this for later use
@@ -700,7 +700,7 @@ class RenderTabluarFlex extends RenderFlex {
     if (maxGrandchildrenCrossSize.isNotEmpty) {
       double minCrossSize = maxGrandchildrenCrossSize.values
           .reduce((value, element) => value + element);
-//      debugPrint('${DateTime.now().toString().substring(5, 22)} tabluar_flex.dart(624) $this.performLayout: '
+//      debugPrint('${DateTime.now().toString().substring(5, 22)} tabular_flex.dart(624) $this.performLayout: '
 //        'minCrossSize:$minCrossSize crossSize:$crossSize minChildrenMainSize:$minChildrenMainSize maxGrandchildrenCrossSize:$maxGrandchildrenCrossSize');
 
       child = firstChild;
@@ -725,7 +725,7 @@ class RenderTabluarFlex extends RenderFlex {
             callbackCalled = true;
           }
 
-          RenderTabluarFlex tabluarFlexChild = tabluarFlexDescendants[child];
+          RenderTabularFlex tabluarFlexChild = tabluarFlexDescendants[child];
           tabluarFlexChild.layoutCallbackQueue.addLast(_childLayoutCallback);
           tabluarFlexChild.minMainSizesQueue.addLast(maxGrandchildrenCrossSize);
           tabluarFlexChild.layout(innerConstraints, parentUsesSize: true);
